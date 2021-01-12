@@ -1,19 +1,17 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 30
     buildToolsVersion '30.0.3'
-
     defaultConfig {
-        applicationId "com.pro100svitlo.nfccardread"
+        multiDexEnabled true
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 5
+        versionCode 2
         versionName "1.0.2"
     }
     buildTypes {
         release {
-            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -24,9 +22,10 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation project(path: ':reader')
-    testImplementation 'junit:junit:4.13.1'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.2.1'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.noveogroup.android:android-logger:1.3.5'
+    implementation 'com.parse.bolts:bolts-android:1.1.2'
+    implementation files('libs/commons-lang3-3.0.jar')
+    implementation files('libs/commons-collections4-4.0.jar')
+    implementation 'commons-io:commons-io:2.4'
 }

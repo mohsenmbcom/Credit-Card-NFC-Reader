@@ -12,11 +12,12 @@ import com.pro100svitlo.creditCardNfcReader.model.EmvCard;
 import com.pro100svitlo.creditCardNfcReader.parser.EmvParser;
 import com.pro100svitlo.creditCardNfcReader.utils.Provider;
 
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by pro100svitlo on 21.03.16.
@@ -85,16 +86,20 @@ public class CardNfcAsyncTask extends AsyncTask<Void, Void, Object>{
     public final static String CARD_INTER_SWITCH = EmvCardScheme.INTER_SWITCH.toString();
 
     private final static String NFC_A_TAG = "TAG: Tech [android.nfc.tech.IsoDep, android.nfc.tech.NfcA]";
+    private final static String NFC_A_NDEF_TAG = "TAG: Tech [android.nfc.tech.IsoDep, android.nfc.tech.NfcA, android.nfc.tech.Ndef]";
     private final static String NFC_B_TAG = "TAG: Tech [android.nfc.tech.IsoDep, android.nfc.tech.NfcB]";
+
+    private final static List<String> TAG_TYPES = Arrays.asList(new String[]{NFC_A_TAG, NFC_A_NDEF_TAG, NFC_B_TAG});
+
     private final String UNKNOWN_CARD_MESS =
-            "===========================================================================\n\n"+
-            "Hi! This library is not familiar with your credit card. \n " +
-            "Please, write me an email with information of your bank: \n" +
-            "country, bank name, card type, etc) and i will try to do my best, \n" +
-            "to add your bank as a known one into this lib. \n" +
-            "Great thanks for using and reporting!!! \n" +
-            "Here is my email: pro100svitlo@gmail.com. \n\n" +
-            "===========================================================================";
+            "===========================================================================\n\n" +
+                    "Hi! This library is not familiar with your credit card. \n " +
+                    "Please, write me an email with information of your bank: \n" +
+                    "country, bank name, card type, etc) and i will try to do my best, \n" +
+                    "to add your bank as a known one into this lib. \n" +
+                    "Great thanks for using and reporting!!! \n" +
+                    "Here is my email: pro100svitlo@gmail.com. \n\n" +
+                    "===========================================================================";
 
     private Provider mProvider = new Provider();
     private boolean mException;
@@ -110,7 +115,7 @@ public class CardNfcAsyncTask extends AsyncTask<Void, Void, Object>{
         if (mTag != null) {
             mInterface = b.mInterface;
             try {
-                if (mTag.toString().equals(NFC_A_TAG) || mTag.toString().equals(NFC_B_TAG)) {
+                if (TAG_TYPES.contains(mTag.toString())) {
                     execute();
                 } else {
                     if (!b.mFromStart) {
